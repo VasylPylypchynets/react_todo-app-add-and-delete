@@ -8,6 +8,12 @@ import { TodoList } from './components/TodoList/TodoList';
 import { Footer } from './components/Footer/Footer';
 import { Error } from './components/ErrorMessage/ErrorMessage';
 
+export enum Filter {
+  All = 'all',
+  Active = 'active',
+  Completed = 'completed',
+}
+
 export const App: React.FC = () => {
   const [query, setQuery] = useState<string>('');
   const [todos, setTodos] = useState<Todo[]>([]);
@@ -188,17 +194,17 @@ export const App: React.FC = () => {
         setErrorMessage(null);
 
         switch (sortBy) {
-          case 'all':
+          case Filter.All:
             setTodos(todosFromServer);
             break;
-          case 'active':
+          case Filter.Active:
             const sortedByActive: Todo[] = todosFromServer.filter(
               todo => !todo.completed,
             );
 
             setTodos(sortedByActive);
             break;
-          case 'completed':
+          case Filter.Completed:
             const sortedByCompleted: Todo[] = todosFromServer.filter(
               todo => todo.completed,
             );

@@ -1,3 +1,5 @@
+import classNames from 'classnames';
+
 import { Todo } from '../../types/Todo';
 
 type TodoItemProps = {
@@ -18,7 +20,10 @@ export function TodoItem({
   isAdding,
 }: TodoItemProps) {
   return (
-    <div data-cy="Todo" className={`todo ${todo.completed ? 'completed' : ''}`}>
+    <div
+      data-cy="Todo"
+      className={classNames('todo', { completed: todo.completed })}
+    >
       <label htmlFor={`${todo.id}`} className="todo__status-label">
         {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
         <input
@@ -48,7 +53,12 @@ export function TodoItem({
       {/* Overlay will cover the todo while it is being deleted or updated */}
       <div
         data-cy="TodoLoader"
-        className={`modal overlay ${(isLoadingChange && deleteTodoId === todo.id) || (cleanCompleted && todo.completed) || isAdding ? 'is-active' : ''}`}
+        className={classNames('modal', 'overlay', {
+          'is-active':
+            (isLoadingChange && deleteTodoId === todo.id) ||
+            (cleanCompleted && todo.completed) ||
+            isAdding,
+        })}
         key={todo.id}
       >
         <div className="modal-background has-background-white-ter" />

@@ -1,4 +1,7 @@
+import classNames from 'classnames';
+
 import { Todo } from '../../types/Todo';
+import { Filter } from '../../App';
 
 type FooterProps = {
   itemsLeft: number;
@@ -22,41 +25,22 @@ export function Footer({
       </span>
       {/* Active link should have the 'selected' class */}
       <nav className="filter" data-cy="Filter">
-        <a
-          href="#/"
-          className={`filter__link ${sortBy === 'all' ? 'selected' : ''}`}
-          data-cy="FilterLinkAll"
-          onClick={e => {
-            e.preventDefault();
-            onSortBy('all');
-          }}
-        >
-          All
-        </a>
-
-        <a
-          href="#/active"
-          className={`filter__link ${sortBy === 'active' ? 'selected' : ''}`}
-          data-cy="FilterLinkActive"
-          onClick={e => {
-            e.preventDefault();
-            onSortBy('active');
-          }}
-        >
-          Active
-        </a>
-
-        <a
-          href="#/completed"
-          className={`filter__link ${sortBy === 'completed' ? 'selected' : ''}`}
-          data-cy="FilterLinkCompleted"
-          onClick={e => {
-            e.preventDefault();
-            onSortBy('completed');
-          }}
-        >
-          Completed
-        </a>
+        {Object.values(Filter).map(filter => (
+          <a
+            key={filter}
+            href={`#/${filter}`}
+            className={classNames('filter__link', {
+              selected: sortBy === filter,
+            })}
+            data-cy={`FilterLink${filter.charAt(0).toUpperCase() + filter.slice(1)}`}
+            onClick={e => {
+              e.preventDefault();
+              onSortBy(filter);
+            }}
+          >
+            {filter.charAt(0).toUpperCase() + filter.slice(1)}
+          </a>
+        ))}
       </nav>
       {/* this button should be disabled if there are no completed todos */}
       <button
